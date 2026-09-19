@@ -2,6 +2,9 @@
 
 Cloud Explorer is a cross-platform Uno Platform desktop application for browsing AWS and Azure resources through the user's installed cloud CLIs. It targets Skia Desktop on Windows, macOS, and Linux.
 
+> [!IMPORTANT]
+> Cloud Explorer is currently in active development. Features, behavior, and packaging may change, and production use is not yet recommended.
+
 ## Current capabilities
 
 - AWS is the default tab.
