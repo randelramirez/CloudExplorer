@@ -1,0 +1,80 @@
+<Application x:Class="CloudExplorer.App"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="PageBackgroundBrush" Color="#F4F7FB" />
+          <SolidColorBrush x:Key="ShellBackgroundBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SurfaceMutedBrush" Color="#EEF2F7" />
+          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#182230" />
+          <SolidColorBrush x:Key="TextSecondaryBrush" Color="#526173" />
+          <SolidColorBrush x:Key="BorderBrush" Color="#D8E0EA" />
+          <SolidColorBrush x:Key="AwsAccentBrush" Color="#B45309" />
+          <SolidColorBrush x:Key="AwsTintBrush" Color="#FFF4E6" />
+          <SolidColorBrush x:Key="AwsOnAccentBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="AzureAccentBrush" Color="#0067B8" />
+          <SolidColorBrush x:Key="AzureTintBrush" Color="#E8F3FC" />
+          <SolidColorBrush x:Key="AzureOnAccentBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#0F7B45" />
+          <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF7D6" />
+          <SolidColorBrush x:Key="WarningBorderBrush" Color="#C89400" />
+          <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#FFF0F0" />
+          <SolidColorBrush x:Key="DangerBorderBrush" Color="#C42B1C" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="PageBackgroundBrush" Color="#0B111A" />
+          <SolidColorBrush x:Key="ShellBackgroundBrush" Color="#111A26" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#172231" />
+          <SolidColorBrush x:Key="SurfaceMutedBrush" Color="#202D3D" />
+          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F1F5F9" />
+          <SolidColorBrush x:Key="TextSecondaryBrush" Color="#AEBBCD" />
+          <SolidColorBrush x:Key="BorderBrush" Color="#344257" />
+          <SolidColorBrush x:Key="AwsAccentBrush" Color="#FFB454" />
+          <SolidColorBrush x:Key="AwsTintBrush" Color="#3A2918" />
+          <SolidColorBrush x:Key="AwsOnAccentBrush" Color="#201306" />
+          <SolidColorBrush x:Key="AzureAccentBrush" Color="#65B7F3" />
+          <SolidColorBrush x:Key="AzureTintBrush" Color="#142E43" />
+          <SolidColorBrush x:Key="AzureOnAccentBrush" Color="#071724" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#65D69A" />
+          <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#3A3114" />
+          <SolidColorBrush x:Key="WarningBorderBrush" Color="#F2C744" />
+          <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#3B1D20" />
+          <SolidColorBrush x:Key="DangerBorderBrush" Color="#FF8A80" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Default">
+          <SolidColorBrush x:Key="PageBackgroundBrush" Color="#F4F7FB" />
+          <SolidColorBrush x:Key="ShellBackgroundBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SurfaceMutedBrush" Color="#EEF2F7" />
+          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#182230" />
+          <SolidColorBrush x:Key="TextSecondaryBrush" Color="#526173" />
+          <SolidColorBrush x:Key="BorderBrush" Color="#D8E0EA" />
+          <SolidColorBrush x:Key="AwsAccentBrush" Color="#B45309" />
+          <SolidColorBrush x:Key="AwsTintBrush" Color="#FFF4E6" />
+          <SolidColorBrush x:Key="AwsOnAccentBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="AzureAccentBrush" Color="#0067B8" />
+          <SolidColorBrush x:Key="AzureTintBrush" Color="#E8F3FC" />
+          <SolidColorBrush x:Key="AzureOnAccentBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#0F7B45" />
+          <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF7D6" />
+          <SolidColorBrush x:Key="WarningBorderBrush" Color="#C89400" />
+          <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#FFF0F0" />
+          <SolidColorBrush x:Key="DangerBorderBrush" Color="#C42B1C" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+
+      <ResourceDictionary.MergedDictionaries>
+        <!-- Load WinUI resources -->
+        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+        <!-- Load Uno.UI.Toolkit resources -->
+        <ToolkitResources xmlns="using:Uno.Toolkit.UI" />
+      </ResourceDictionary.MergedDictionaries>
+
+    </ResourceDictionary>
+  </Application.Resources>
+
+</Application>
