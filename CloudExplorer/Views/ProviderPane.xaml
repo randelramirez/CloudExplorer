@@ -1,0 +1,298 @@
+<UserControl
+    x:Class="CloudExplorer.Views.ProviderPane"
+    x:Name="Root"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:CloudExplorer.Converters">
+
+  <UserControl.Resources>
+    <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    <converters:BooleanToVisibilityConverter x:Key="InverseBoolToVisibility" Invert="True" />
+
+    <DataTemplate x:Key="GroupHeaderTemplate">
+      <Grid Padding="14,18,14,8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            Text="{Binding GroupTitle}"
+            FontSize="15"
+            FontWeight="SemiBold"
+            Foreground="{ThemeResource TextPrimaryBrush}" />
+        <TextBlock
+            Grid.Column="1"
+            Text="{Binding GroupCountDisplay}"
+            FontSize="12"
+            Foreground="{ThemeResource TextSecondaryBrush}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ResourceTemplate">
+      <Border
+          Margin="8,2"
+          Padding="12"
+          Background="{ThemeResource SurfaceBrush}"
+          BorderBrush="{ThemeResource BorderBrush}"
+          BorderThickness="1"
+          CornerRadius="8">
+        <Grid ColumnSpacing="14" RowSpacing="8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1.15*" />
+            <ColumnDefinition Width="1.35*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+
+          <StackPanel Spacing="3">
+            <TextBlock
+                Text="{Binding Resource.Name}"
+                TextTrimming="CharacterEllipsis"
+                FontWeight="SemiBold"
+                Foreground="{ThemeResource TextPrimaryBrush}"
+                ToolTipService.ToolTip="{Binding Resource.Id}" />
+            <TextBlock
+                Text="{Binding Resource.ResourceType}"
+                TextTrimming="CharacterEllipsis"
+                FontSize="12"
+                Foreground="{ThemeResource TextSecondaryBrush}" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="1" Spacing="3">
+            <TextBlock Text="GROUP / LOCATION" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}" />
+            <TextBlock
+                Text="{Binding Resource.GroupName}"
+                TextTrimming="CharacterEllipsis"
+                Foreground="{ThemeResource TextPrimaryBrush}" />
+            <TextBlock
+                Text="{Binding Resource.Location}"
+                TextTrimming="CharacterEllipsis"
+                FontSize="12"
+                Foreground="{ThemeResource TextSecondaryBrush}" />
+          </StackPanel>
+
+          <Grid Grid.Column="2" ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Spacing="3">
+              <TextBlock Text="CREATED" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}" />
+              <TextBlock
+                  Text="{Binding Resource.CreatedDisplay}"
+                  TextWrapping="Wrap"
+                  Foreground="{ThemeResource TextPrimaryBrush}"
+                  ToolTipService.ToolTip="{Binding Resource.CreatedAtSource}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Spacing="3">
+              <TextBlock Text="LAST MODIFIED" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}" />
+              <TextBlock
+                  Text="{Binding Resource.LastModifiedDisplay}"
+                  TextWrapping="Wrap"
+                  Foreground="{ThemeResource TextPrimaryBrush}"
+                  ToolTipService.ToolTip="{Binding Resource.LastModifiedAtSource}" />
+            </StackPanel>
+          </Grid>
+
+          <TextBlock
+              Grid.Row="1"
+              Grid.ColumnSpan="3"
+              Text="{Binding Resource.TagsDisplay}"
+              TextTrimming="CharacterEllipsis"
+              FontSize="12"
+              Foreground="{ThemeResource TextSecondaryBrush}"
+              ToolTipService.ToolTip="{Binding Resource.TagsDisplay}" />
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <converters:ResourceRowTemplateSelector
+        x:Key="ResourceRowSelector"
+        GroupHeaderTemplate="{StaticResource GroupHeaderTemplate}"
+        ResourceTemplate="{StaticResource ResourceTemplate}" />
+  </UserControl.Resources>
+
+  <Grid Background="{ThemeResource PageBackgroundBrush}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Border
+        Margin="12,12,12,6"
+        Padding="16"
+        Background="{ThemeResource SurfaceBrush}"
+        BorderBrush="{Binding AccentBrush, ElementName=Root}"
+        BorderThickness="2,0,0,0"
+        CornerRadius="8">
+      <Grid ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border
+            Width="42"
+            Height="42"
+            Background="{Binding TintBrush, ElementName=Root}"
+            CornerRadius="10">
+          <TextBlock
+              Text="{Binding ProviderInitial, ElementName=Root}"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              FontSize="18"
+              FontWeight="Bold"
+              Foreground="{Binding AccentBrush, ElementName=Root}" />
+        </Border>
+
+        <StackPanel Grid.Column="1" Spacing="2">
+          <TextBlock
+              Text="{Binding ProviderName, ElementName=Root}"
+              FontSize="20"
+              FontWeight="SemiBold"
+              Foreground="{ThemeResource TextPrimaryBrush}" />
+          <TextBlock
+              Text="{Binding Identity}"
+              TextTrimming="CharacterEllipsis"
+              FontSize="12"
+              Foreground="{ThemeResource TextSecondaryBrush}" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" HorizontalAlignment="Right" Spacing="2">
+          <TextBlock
+              Text="{Binding ResourceCountDisplay}"
+              HorizontalAlignment="Right"
+              FontWeight="SemiBold"
+              Foreground="{Binding AccentBrush, ElementName=Root}" />
+          <TextBlock
+              Text="{Binding LastRefreshedDisplay}"
+              HorizontalAlignment="Right"
+              FontSize="11"
+              Foreground="{ThemeResource TextSecondaryBrush}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" Margin="12,6" ColumnSpacing="8">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1.4*" />
+        <ColumnDefinition Width="1.2*" />
+        <ColumnDefinition Width="1.4*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <ComboBox
+          Header="Account / subscription"
+          ItemsSource="{Binding Accounts}"
+          SelectedItem="{Binding SelectedAccount, Mode=OneWay}"
+          DisplayMemberPath="DisplayName"
+          SelectionChanged="AccountSelectionChanged"
+          IsEnabled="{Binding IsNotBusy}"
+          HorizontalAlignment="Stretch" />
+      <ComboBox
+          Grid.Column="1"
+          Header="Group by"
+          ItemsSource="{Binding GroupingOptions}"
+          SelectedItem="{Binding SelectedGrouping, Mode=TwoWay}"
+          HorizontalAlignment="Stretch" />
+      <TextBox
+          Grid.Column="2"
+          Header="Filter cached results"
+          Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+          PlaceholderText="Name, type, tag…" />
+      <Button
+          Grid.Column="3"
+          Margin="0,22,0,0"
+          Padding="18,8"
+          Command="{Binding RefreshCommand}"
+          IsEnabled="{Binding IsNotBusy}"
+          Background="{Binding AccentBrush, ElementName=Root}"
+          Foreground="{Binding AccentForegroundBrush, ElementName=Root}"
+          Content="Refresh" />
+    </Grid>
+
+    <Border
+        Grid.Row="2"
+        Margin="12,4"
+        Padding="12"
+        Background="{ThemeResource WarningSurfaceBrush}"
+        BorderBrush="{ThemeResource WarningBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="8"
+        Visibility="{Binding IsAuthenticationRequired, Converter={StaticResource BoolToVisibility}}">
+      <Grid ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Spacing="3">
+          <TextBlock
+              Text="CLI authentication required"
+              FontWeight="SemiBold"
+              Foreground="{ThemeResource TextPrimaryBrush}" />
+          <TextBlock
+              Text="Sign-in is delegated to the installed cloud CLI. Cloud Explorer never stores your credentials."
+              TextWrapping="Wrap"
+              FontSize="12"
+              Foreground="{ThemeResource TextSecondaryBrush}" />
+        </StackPanel>
+        <Button
+            Grid.Column="1"
+            Command="{Binding LoginCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Content="Sign in with CLI" />
+      </Grid>
+    </Border>
+
+    <Border
+        Grid.Row="3"
+        Margin="12,4"
+        Padding="12"
+        Background="{ThemeResource DangerSurfaceBrush}"
+        BorderBrush="{ThemeResource DangerBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="8"
+        Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}">
+      <TextBlock
+          Text="{Binding ErrorMessage}"
+          TextWrapping="Wrap"
+          Foreground="{ThemeResource TextPrimaryBrush}" />
+    </Border>
+
+    <Grid Grid.Row="4" Margin="4,0,4,8">
+      <ListView
+          ItemsSource="{Binding Rows}"
+          ItemTemplateSelector="{StaticResource ResourceRowSelector}"
+          SelectionMode="None"
+          IsItemClickEnabled="False"
+          Background="Transparent"
+          BorderThickness="0"
+          HorizontalContentAlignment="Stretch"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+
+      <StackPanel
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Spacing="10"
+          Visibility="{Binding HasRows, Converter={StaticResource InverseBoolToVisibility}}">
+        <ProgressRing
+            Width="34"
+            Height="34"
+            IsActive="{Binding IsBusy}"
+            Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+        <TextBlock
+            Text="{Binding StatusMessage}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Foreground="{ThemeResource TextSecondaryBrush}" />
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>
