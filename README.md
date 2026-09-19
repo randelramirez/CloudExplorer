@@ -1,0 +1,75 @@
+# Cloud Explorer
+
+Cloud Explorer is a cross-platform Uno Platform desktop application for browsing AWS and Azure resources through the user's installed cloud CLIs. It targets Skia Desktop on Windows, macOS, and Linux.
+
+## Current capabilities
+
+- AWS is the default tab.
+- AWS CLI profile discovery and profile selection.
+- AWS CLI authentication through `aws sso login` or `aws login`.
+- AWS Resource Explorer inventory grouped by resource type or tag.
+- Azure CLI authentication through `az login`.
+- Azure subscription discovery and selection.
+- Azure resources grouped by resource group or resource type.
+- Independent, explicit refresh buttons with no background polling.
+- Local filtering that never makes a cloud request.
+- Created and modified timestamps when the provider exposes them, otherwise `Not exposed`.
+- Light and dark themes whose colors are entirely theme-resource based.
+- A full-screen 50/50 AWS/Azure comparison mode.
+- Virtualized result rendering and guarded non-overlapping operations.
+
+## Prerequisites
+
+- .NET 10 SDK
+- AWS CLI v2 for AWS features
+- Azure CLI for Azure features
+- An AWS Resource Explorer index and default view in the selected profile's configured region
+- A supported desktop environment: Windows, macOS, or Linux with X11/compatible Uno Skia host support
+
+Cloud Explorer does not read or store credentials itself. Authentication and cached sessions remain owned by the cloud CLIs.
+
+Resource refreshes are designed to use no directly billed API in the baseline implementation; see [docs/COSTS.md](docs/COSTS.md) for the precise caveats.
+
+## Run
+
+```bash
+dotnet restore CloudExplorer.slnx
+dotnet run --project CloudExplorer/CloudExplorer.csproj --framework net10.0-desktop
+```
+
+## Verify
+
+```bash
+dotnet build CloudExplorer.slnx
+dotnet test CloudExplorer.slnx
+```
+
+## Refresh behavior
+
+Each provider loads once when its view is first opened. After that, resource data is cached until the user presses that provider's **Refresh** button. Changing the selected profile or subscription is also an explicit user action and loads that newly selected scope. There are no timers, schedulers, or recurring cloud calls.
+
+## Timestamp semantics
+
+Cloud resource APIs do not guarantee universal creation or modification fields. The application displays a date only when it is returned by the provider and records its source. AWS Resource Explorer's `LastReportedAt` is retained as an observation timestamp and is deliberately not shown as “last modified.” See [docs/DATE_METADATA.md](docs/DATE_METADATA.md).
+
+## Automated phases
+
+The unattended runner starts a completely new ephemeral Codex session for each incomplete phase:
+
+```bash
+./automation/run-phases.sh
+```
+
+It never resumes a previous model session and never performs Git writes. If account usage limits interrupt a phase, run the same command after access resumes; the unfinished phase is audited and continued in another fresh session.
+
+Platform publishing starts with:
+
+```bash
+# Ubuntu or macOS: dispatch to the current host
+./scripts/publish.sh
+
+# Windows PowerShell
+.\scripts\publish-windows.ps1
+```
+
+Complete publisher prerequisites and end-user installation steps are separated by operating system in the [publishing index](docs/PUBLISHING.md): [Ubuntu](docs/platforms/UBUNTU.md), [Windows](docs/platforms/WINDOWS.md), and [macOS](docs/platforms/MACOS.md).
