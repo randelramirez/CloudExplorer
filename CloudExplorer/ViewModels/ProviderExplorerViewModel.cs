@@ -45,15 +45,11 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
 
     protected ProviderExplorerViewModel(IEnumerable<string> groupingOptions)
     {
-        foreach (var grouping in groupingOptions)
-        {
-            GroupingOptions.Add(grouping);
-        }
-
+        GroupingOptions = new ObservableCollection<string>(groupingOptions);
         SelectedGrouping = GroupingOptions.FirstOrDefault() ?? "";
     }
 
-    public ObservableCollection<string> GroupingOptions { get; } = [];
+    public ObservableCollection<string> GroupingOptions { get; }
 
     public bool IsNotBusy => !IsBusy;
 
@@ -97,6 +93,15 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
         LastRefreshedAt = null;
     }
 
+    protected static void ReplaceItems<T>(ObservableCollection<T> target, IEnumerable<T> items)
+    {
+        target.Clear();
+        foreach (var item in items)
+        {
+            target.Add(item);
+        }
+    }
+
     protected async Task RunExclusiveAsync(Func<Task> action)
     {
         if (IsBusy)
@@ -127,10 +132,11 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
 
     private void RebuildRows()
     {
-        var filtered = string.IsNullOrWhiteSpace(SearchText)
+        var searchText = SearchText.Trim();
+        var filtered = searchText.Length == 0
             ? _resources
             : _resources
-                .Where(resource => resource.SearchableText.Contains(SearchText.Trim(), StringComparison.OrdinalIgnoreCase))
+                .Where(resource => resource.SearchableText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         VisibleResourceCount = filtered.Count;
 
