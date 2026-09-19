@@ -344,16 +344,16 @@ internal static class JsonResourceParser
             ? parsed
             : null;
 
-    private static string GetAwsResourceName(string arn)
-    {
-        var separator = Math.Max(arn.LastIndexOf('/'), arn.LastIndexOf(':'));
-        return separator >= 0 && separator < arn.Length - 1 ? arn[(separator + 1)..] : arn;
-    }
+    private static string GetAwsResourceName(string arn) => GetTrailingSegment(arn, "/:");
 
-    private static string GetAzureResourceName(string id)
+    private static string GetAzureResourceName(string id) => GetTrailingSegment(id, "/");
+
+    private static string GetTrailingSegment(string identifier, ReadOnlySpan<char> separators)
     {
-        var separator = id.LastIndexOf('/');
-        return separator >= 0 && separator < id.Length - 1 ? id[(separator + 1)..] : id;
+        var separator = identifier.AsSpan().LastIndexOfAny(separators);
+        return separator >= 0 && separator < identifier.Length - 1
+            ? identifier[(separator + 1)..]
+            : identifier;
     }
 
     private static string ValueOrFallback(params string[] values) =>
