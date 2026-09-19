@@ -100,12 +100,7 @@ public sealed partial class AzureExplorerViewModel : ProviderExplorerViewModel
         try
         {
             var subscriptions = await _service.GetSubscriptionsAsync();
-            Accounts.Clear();
-            foreach (var subscription in subscriptions)
-            {
-                Accounts.Add(subscription);
-            }
-
+            ReplaceItems(Accounts, subscriptions);
             SelectedAccount = Accounts.FirstOrDefault(static account => account.IsDefault) ?? Accounts.FirstOrDefault();
             IsAuthenticated = SelectedAccount is not null;
             if (SelectedAccount is null)
