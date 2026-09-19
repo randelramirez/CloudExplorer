@@ -55,15 +55,7 @@ Each provider loads once when its view is first opened. After that, resource dat
 
 Cloud resource APIs do not guarantee universal creation or modification fields. The application displays a date only when it is returned by the provider and records its source. AWS Resource Explorer's `LastReportedAt` is retained as an observation timestamp and is deliberately not shown as “last modified.” See [docs/DATE_METADATA.md](docs/DATE_METADATA.md).
 
-## Automated phases
-
-The unattended runner starts a completely new ephemeral Codex session for each incomplete phase:
-
-```bash
-./automation/run-phases.sh
-```
-
-It never resumes a previous model session and never performs Git writes. If account usage limits interrupt a phase, run the same command after access resumes; the unfinished phase is audited and continued in another fresh session.
+## Publishing
 
 Platform publishing starts with:
 
