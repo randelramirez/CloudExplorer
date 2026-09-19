@@ -1,0 +1,120 @@
+<Page
+    x:Class="CloudExplorer.MainPage"
+    x:Name="RootPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:CloudExplorer.Converters"
+    xmlns:views="using:CloudExplorer.Views"
+    Loaded="PageLoaded"
+    Background="{ThemeResource PageBackgroundBrush}">
+
+  <Page.Resources>
+    <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    <converters:BooleanToVisibilityConverter x:Key="InverseBoolToVisibility" Invert="True" />
+
+    <DataTemplate x:Key="AwsPaneTemplate">
+      <views:ProviderPane
+          ProviderName="Amazon Web Services"
+          ProviderInitial="A"
+          AccentBrush="{ThemeResource AwsAccentBrush}"
+          TintBrush="{ThemeResource AwsTintBrush}"
+          AccentForegroundBrush="{ThemeResource AwsOnAccentBrush}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="AzurePaneTemplate">
+      <views:ProviderPane
+          ProviderName="Microsoft Azure"
+          ProviderInitial="Az"
+          AccentBrush="{ThemeResource AzureAccentBrush}"
+          TintBrush="{ThemeResource AzureTintBrush}"
+          AccentForegroundBrush="{ThemeResource AzureOnAccentBrush}" />
+    </DataTemplate>
+  </Page.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Border
+        Padding="18,12"
+        Background="{ThemeResource ShellBackgroundBrush}"
+        BorderBrush="{ThemeResource BorderBrush}"
+        BorderThickness="0,0,0,1">
+      <Grid ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border
+            Width="40"
+            Height="40"
+            Background="{ThemeResource SurfaceMutedBrush}"
+            CornerRadius="12">
+          <TextBlock
+              Text="☁"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              FontSize="22"
+              Foreground="{ThemeResource AzureAccentBrush}" />
+        </Border>
+
+        <StackPanel Grid.Column="1" Spacing="1">
+          <TextBlock
+              Text="Cloud Explorer"
+              FontSize="20"
+              FontWeight="SemiBold"
+              Foreground="{ThemeResource TextPrimaryBrush}" />
+          <TextBlock
+              Text="AWS and Azure resources, using your local CLI sessions"
+              FontSize="11"
+              Foreground="{ThemeResource TextSecondaryBrush}" />
+        </StackPanel>
+
+        <ToggleSwitch
+            Grid.Column="2"
+            Header="Dark mode"
+            IsOn="{Binding IsDarkMode, Mode=TwoWay}"
+            Toggled="ThemeToggled" />
+
+        <Button
+            Grid.Column="3"
+            Padding="14,8"
+            Click="FullScreenComparisonClicked"
+            Content="{Binding FullScreenButtonText}" />
+      </Grid>
+    </Border>
+
+    <TabView
+        x:Name="ProviderTabs"
+        Grid.Row="1"
+        SelectedIndex="0"
+        IsAddTabButtonVisible="False"
+        SelectionChanged="ProviderTabSelectionChanged"
+        Visibility="{Binding IsFullScreenComparison, Converter={StaticResource InverseBoolToVisibility}}">
+      <TabViewItem Header="AWS">
+        <ContentControl Content="{Binding Aws}" ContentTemplate="{StaticResource AwsPaneTemplate}" />
+      </TabViewItem>
+      <TabViewItem Header="Azure">
+        <ContentControl Content="{Binding Azure}" ContentTemplate="{StaticResource AzurePaneTemplate}" />
+      </TabViewItem>
+    </TabView>
+
+    <Grid
+        Grid.Row="1"
+        ColumnSpacing="1"
+        Background="{ThemeResource BorderBrush}"
+        Visibility="{Binding IsFullScreenComparison, Converter={StaticResource BoolToVisibility}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <ContentControl Content="{Binding Aws}" ContentTemplate="{StaticResource AwsPaneTemplate}" />
+      <ContentControl Grid.Column="1" Content="{Binding Azure}" ContentTemplate="{StaticResource AzurePaneTemplate}" />
+    </Grid>
+  </Grid>
+</Page>
