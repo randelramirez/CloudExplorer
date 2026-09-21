@@ -112,7 +112,7 @@ public sealed partial class AwsExplorerViewModel : ProviderExplorerViewModel
         StatusMessage = "Reading AWS CLI profiles…";
         var profiles = await _service.GetProfilesAsync();
         ReplaceItems(Accounts, profiles);
-        SelectedAccount = Accounts.FirstOrDefault(static account => account.IsDefault) ?? Accounts.FirstOrDefault();
+        SelectedAccount = GetPreferredAccount(Accounts);
     }
 
     private async Task RefreshCoreAsync()
