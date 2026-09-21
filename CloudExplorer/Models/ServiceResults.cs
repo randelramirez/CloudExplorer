@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace CloudExplorer.Models;
 
 public sealed record AuthenticationResult(
