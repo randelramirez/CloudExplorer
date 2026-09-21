@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using CloudExplorer.Models;
+
 namespace CloudExplorer.Services;
 
 public interface IAwsCliService
