@@ -5,10 +5,10 @@ Cloud Explorer has host-specific release scripts because native packaging, code 
 | Target | Release script | Publishing and installation guide |
 |---|---|---|
 | Ubuntu/Linux | `./scripts/publish-ubuntu.sh` | [Ubuntu](platforms/UBUNTU.md) |
-| Windows | `.\scripts\publish-windows.ps1` | [Windows](platforms/WINDOWS.md) |
+| Windows | `pwsh -File .\scripts\publish-windows.ps1` | [Windows](platforms/WINDOWS.md) |
 | macOS | `./scripts/publish-macos.sh` | [macOS](platforms/MACOS.md) |
 
-On Linux or macOS, `./scripts/publish.sh` dispatches to the current operating system's script. Every baseline package is self-contained, so end users do not need to install .NET. Release artifacts and SHA-256 checksum files are separated into the easy-to-find root-level `installer/windows/`, `installer/macOS/`, and `installer/ubuntu/` directories. Generated packages are ignored by Git while the directory README files remain visible.
+On Linux or macOS, `./scripts/publish.sh` dispatches to the current operating system's script. Windows publishing requires PowerShell 7 or later (`pwsh`), not Windows PowerShell. Every baseline package is self-contained, so end users do not need to install .NET. Release artifacts and SHA-256 checksum files are separated into the easy-to-find root-level `installer/windows/`, `installer/macOS/`, and `installer/ubuntu/` directories. Generated packages are ignored by Git while the directory README files remain visible.
 
 The scripts deliberately do not commit, push, upload, or publish to a store. They only build local artifacts. Store uploads, certificate access, signing identity selection, and release promotion remain explicit publisher actions.
 
