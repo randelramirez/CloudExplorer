@@ -19,17 +19,11 @@ public sealed partial class MainPage : Page
             return;
         }
 
-        _loaded = true;
         ViewModel.IsDarkMode = ActualTheme == ElementTheme.Dark;
-        await ViewModel.Aws.InitializeAsync();
-    }
-
-    private async void ProviderTabSelectionChanged(object sender, SelectionChangedEventArgs args)
-    {
-        if (_loaded && ProviderTabs.SelectedIndex == 1)
-        {
-            await ViewModel.Azure.InitializeAsync();
-        }
+        SelectViewOption(ViewModel.SelectedProviderViewMode);
+        ApplyProviderViewMode(ViewModel.SelectedProviderViewMode);
+        _loaded = true;
+        await ViewModel.InitializeVisibleProvidersAsync();
     }
 
     private void ThemeToggled(object sender, RoutedEventArgs args)
@@ -37,16 +31,46 @@ public sealed partial class MainPage : Page
         RequestedTheme = ViewModel.IsDarkMode ? ElementTheme.Dark : ElementTheme.Light;
     }
 
-    private async void FullScreenComparisonClicked(object sender, RoutedEventArgs args)
+    private async void ProviderViewOptionChecked(object sender, RoutedEventArgs args)
     {
-        ViewModel.IsFullScreenComparison = !ViewModel.IsFullScreenComparison;
-        ((App)Application.Current).TrySetFullScreen(ViewModel.IsFullScreenComparison);
-
-        if (ViewModel.IsFullScreenComparison)
+        if (!_loaded ||
+            sender is not RadioButton { IsChecked: true, Tag: string modeName } ||
+            !Enum.TryParse(modeName, ignoreCase: false, out ProviderViewMode mode))
         {
-            await Task.WhenAll(
-                ViewModel.Aws.InitializeAsync(),
-                ViewModel.Azure.InitializeAsync());
+            return;
+        }
+
+        ViewModel.SelectedProviderViewMode = mode;
+        ApplyProviderViewMode(mode);
+        await ViewModel.InitializeVisibleProvidersAsync();
+    }
+
+    private void SelectViewOption(ProviderViewMode mode)
+    {
+        BothViewOption.IsChecked = mode == ProviderViewMode.Both;
+        AwsViewOption.IsChecked = mode == ProviderViewMode.Aws;
+        AzureViewOption.IsChecked = mode == ProviderViewMode.Azure;
+    }
+
+    private void ApplyProviderViewMode(ProviderViewMode mode)
+    {
+        var showBoth = mode == ProviderViewMode.Both;
+        var showAws = mode is ProviderViewMode.Both or ProviderViewMode.Aws;
+        var showAzure = mode is ProviderViewMode.Both or ProviderViewMode.Azure;
+
+        AwsProviderPane.Visibility = showAws ? Visibility.Visible : Visibility.Collapsed;
+        AzureProviderPane.Visibility = showAzure ? Visibility.Visible : Visibility.Collapsed;
+        AwsProviderPane.IsCompact = showBoth;
+        AzureProviderPane.IsCompact = showBoth;
+
+        Grid.SetColumn(AwsProviderPane, 0);
+        Grid.SetColumnSpan(AwsProviderPane, showBoth ? 1 : 2);
+        Grid.SetColumn(AzureProviderPane, showBoth ? 1 : 0);
+        Grid.SetColumnSpan(AzureProviderPane, showBoth ? 1 : 2);
+
+        if (!showAws && !showAzure)
+        {
+            throw new ArgumentOutOfRangeException(nameof(mode), mode, "Unknown provider view mode.");
         }
     }
 }
