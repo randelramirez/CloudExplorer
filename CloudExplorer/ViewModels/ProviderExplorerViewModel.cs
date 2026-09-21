@@ -1,8 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using CloudExplorer.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace CloudExplorer.ViewModels;
 
 public abstract partial class ProviderExplorerViewModel : ObservableObject
 {
     private readonly List<CloudResource> _resources = [];
+    private readonly List<ResourceSearchEntry> _resourceSearchIndex = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsNotBusy))]
@@ -79,6 +88,10 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
     {
         _resources.Clear();
         _resources.AddRange(resources);
+        _resourceSearchIndex.Clear();
+        _resourceSearchIndex.AddRange(_resources.Select(static resource => new ResourceSearchEntry(
+            resource,
+            resource.SearchableTextPrefix)));
         ResourceCount = _resources.Count;
         LastRefreshedAt = DateTimeOffset.Now;
         RebuildRows();
@@ -87,6 +100,7 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
     protected void ClearResources()
     {
         _resources.Clear();
+        _resourceSearchIndex.Clear();
         ResourceCount = 0;
         Rows = [];
         VisibleResourceCount = 0;
@@ -145,8 +159,9 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
         var searchText = SearchText.Trim();
         return searchText.Length == 0
             ? _resources
-            : _resources
-                .Where(resource => resource.SearchableText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+            : _resourceSearchIndex
+                .Where(resource => resource.Matches(searchText))
+                .Select(static resource => resource.Resource)
                 .ToList();
     }
 
@@ -175,5 +190,12 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
         }
 
         return rows;
+    }
+
+    private readonly record struct ResourceSearchEntry(CloudResource Resource, string SearchableTextPrefix)
+    {
+        public bool Matches(string searchText) =>
+            string.Concat(SearchableTextPrefix, " ", Resource.TagsDisplay)
+                .Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }
 }
