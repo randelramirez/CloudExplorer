@@ -15,7 +15,13 @@
     <!-- Package Publisher -->
     <ApplicationPublisher>CloudExplorer</ApplicationPublisher>
     <!-- Package Description -->
-    <Description>CloudExplorer powered by Uno Platform.</Description>
+    <Description>Explore AWS and Azure resources from one desktop application.</Description>
+
+    <!-- Uno.Resizetizer turns this source pair into the Windows executable icon,
+         macOS ICNS, Linux/Snap launcher image, and runtime desktop window icon. -->
+    <UnoIconBackgroundFile>Assets/Icons/icon.svg</UnoIconBackgroundFile>
+    <UnoIconForegroundFile>Assets/Icons/icon_foreground.svg</UnoIconForegroundFile>
+    <UnoIconForegroundScale>0.88</UnoIconForegroundScale>
 
     <!--
       UnoFeatures are used to quickly add and manage features enabled for your app.
