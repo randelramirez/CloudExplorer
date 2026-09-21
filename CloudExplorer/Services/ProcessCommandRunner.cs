@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,6 +12,10 @@ namespace CloudExplorer.Services;
 
 public sealed class ProcessCommandRunner(ILogger<ProcessCommandRunner> logger) : ICommandRunner
 {
+    private const int NoSuchFileOrDirectory = 2;
+    private const int ExecFormatError = 8;
+    private const int BadArchitecture = 86;
+
     public async Task<CommandResult> RunAsync(
         string fileName,
         IEnumerable<string> arguments,
@@ -66,10 +73,28 @@ public sealed class ProcessCommandRunner(ILogger<ProcessCommandRunner> logger) :
                 await outputTask,
                 await errorTask);
         }
-        catch (System.ComponentModel.Win32Exception)
+        catch (Win32Exception exception)
         {
-            return new CommandResult(-1, "", $"{fileName} was not found. Install it and ensure it is available on PATH.");
+            logger.LogWarning(exception, "Could not start {Executable}.", fileName);
+            return new CommandResult(-1, "", DescribeStartFailure(fileName, exception));
         }
+    }
+
+    private static string DescribeStartFailure(string fileName, Win32Exception exception)
+    {
+        if (exception.NativeErrorCode == NoSuchFileOrDirectory || !File.Exists(fileName))
+        {
+            return $"{fileName} was not found. Install it and ensure it is available on PATH.";
+        }
+
+        // The executable exists but cannot be launched, most often an x86_64 CLI on an
+        // Apple Silicon Mac without Rosetta, or an architecture mismatch on Linux.
+        if (exception.NativeErrorCode is ExecFormatError or BadArchitecture)
+        {
+            return $"{fileName} was found but was built for a different processor architecture than this machine ({RuntimeInformation.OSArchitecture}). Reinstall the CLI for {RuntimeInformation.OSArchitecture}.";
+        }
+
+        return $"{fileName} could not be started. {exception.Message}";
     }
 
     private static async Task<string> SafeReadAsync(Task<string> task)
