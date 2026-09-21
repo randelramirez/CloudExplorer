@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using CloudExplorer.Models;
 using CloudExplorer.Services;
 using CloudExplorer.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Uno.Extensions;
+using Uno.Extensions.Configuration;
 using Uno.Extensions.Hosting;
 using Uno.Resizetizer;
 using Uno.UI;
