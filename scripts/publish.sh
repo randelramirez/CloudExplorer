@@ -11,7 +11,7 @@ case "$(uname -s)" in
     exec "${script_dir}/publish-macos.sh" "$@"
     ;;
   MINGW*|MSYS*|CYGWIN*)
-    printf '%s\n' 'Use PowerShell: .\scripts\publish-windows.ps1' >&2
+    printf '%s\n' 'Use PowerShell 7+: pwsh -File .\scripts\publish-windows.ps1' >&2
     exit 2
     ;;
   *)
