@@ -14,8 +14,8 @@ Generate a package on the target operating system:
 ```
 
 ```powershell
-# Windows PowerShell
-.\scripts\publish-windows.ps1
+# PowerShell 7+
+pwsh -File .\scripts\publish-windows.ps1
 ```
 
 Generated binaries and checksums are intentionally ignored by Git. See the [publishing index](../docs/PUBLISHING.md) for signing, packaging, verification, and installation instructions for each operating system.
