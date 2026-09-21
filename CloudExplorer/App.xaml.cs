@@ -20,22 +20,34 @@ public partial class App : Application
     public IServiceProvider Services => Host?.Services ??
         throw new InvalidOperationException("The application host has not been initialized.");
 
-    public bool TrySetFullScreen(bool fullScreen)
+    private void RequestMaximizedWindow()
     {
         try
         {
-            MainWindow?.AppWindow.SetPresenter(
-                fullScreen
-                    ? Microsoft.UI.Windowing.AppWindowPresenterKind.FullScreen
-                    : Microsoft.UI.Windowing.AppWindowPresenterKind.Default);
-            return MainWindow is not null;
+            if (MainWindow?.AppWindow.Presenter is Microsoft.UI.Windowing.OverlappedPresenter presenter)
+            {
+                presenter.Maximize();
+                return;
+            }
+
+            Host?.Services.GetService<ILogger<App>>()?
+                .LogWarning("The current desktop host does not expose an overlapped window presenter.");
         }
-        catch (Exception exception) when (exception is NotImplementedException or NotSupportedException or InvalidOperationException)
+        catch (Exception exception)
         {
             Host?.Services.GetService<ILogger<App>>()?
-                .LogWarning(exception, "The current desktop host could not change full-screen mode.");
-            return false;
+                .LogWarning(exception, "The current desktop host rejected the maximize-window request.");
         }
+    }
+
+    private void MaximizeWindowOnFirstActivation(object sender, WindowActivatedEventArgs args)
+    {
+        if (MainWindow is not null)
+        {
+            MainWindow.Activated -= MaximizeWindowOnFirstActivation;
+        }
+
+        RequestMaximizedWindow();
     }
 
     [SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "Uno.Extensions APIs are used in a way that is safe for trimming in this template context.")]
@@ -121,6 +133,7 @@ public partial class App : Application
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
         }
         // Ensure the current window is active
+        MainWindow.Activated += MaximizeWindowOnFirstActivation;
         MainWindow.Activate();
     }
 }
