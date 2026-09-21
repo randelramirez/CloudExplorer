@@ -88,6 +88,7 @@ if [[ ! "${application_id}" =~ ^[[:alnum:]][[:alnum:]._-]*$ ]]; then
 fi
 
 mkdir -p "${packages_dir}"
+mkdir -p "${artifacts_dir}"
 staging_dir="$(mktemp -d "${artifacts_dir}/.publish-ubuntu.XXXXXX")"
 trap cleanup EXIT
 
