@@ -79,6 +79,11 @@ try {
         throw "Published executable was not found: $executablePath"
     }
 
+    $iconPath = Join-Path $bundleDirectory "icon.ico"
+    if (-not (Test-Path $iconPath -PathType Leaf) -or (Get-Item $iconPath).Length -eq 0) {
+        throw "Published application icon was not found: $iconPath"
+    }
+
     Get-ChildItem -Path $bundleDirectory -Filter *.pdb -Recurse | Remove-Item -Force
 
     if (-not [string]::IsNullOrWhiteSpace($CertificateThumbprint)) {
