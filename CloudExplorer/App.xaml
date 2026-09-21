@@ -23,6 +23,9 @@
           <SolidColorBrush x:Key="WarningBorderBrush" Color="#C89400" />
           <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#FFF0F0" />
           <SolidColorBrush x:Key="DangerBorderBrush" Color="#C42B1C" />
+          <StaticResource x:Key="ToggleSwitchFillOff" ResourceKey="SurfaceMutedBrush" />
+          <StaticResource x:Key="ToggleSwitchStrokeOff" ResourceKey="TextSecondaryBrush" />
+          <StaticResource x:Key="ToggleSwitchKnobFillOff" ResourceKey="TextPrimaryBrush" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
           <SolidColorBrush x:Key="PageBackgroundBrush" Color="#0B111A" />
@@ -42,6 +45,9 @@
           <SolidColorBrush x:Key="WarningBorderBrush" Color="#F2C744" />
           <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#3B1D20" />
           <SolidColorBrush x:Key="DangerBorderBrush" Color="#FF8A80" />
+          <StaticResource x:Key="ToggleSwitchFillOff" ResourceKey="SurfaceMutedBrush" />
+          <StaticResource x:Key="ToggleSwitchStrokeOff" ResourceKey="TextSecondaryBrush" />
+          <StaticResource x:Key="ToggleSwitchKnobFillOff" ResourceKey="TextPrimaryBrush" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Default">
           <SolidColorBrush x:Key="PageBackgroundBrush" Color="#F4F7FB" />
@@ -61,6 +67,9 @@
           <SolidColorBrush x:Key="WarningBorderBrush" Color="#C89400" />
           <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#FFF0F0" />
           <SolidColorBrush x:Key="DangerBorderBrush" Color="#C42B1C" />
+          <StaticResource x:Key="ToggleSwitchFillOff" ResourceKey="SurfaceMutedBrush" />
+          <StaticResource x:Key="ToggleSwitchStrokeOff" ResourceKey="TextSecondaryBrush" />
+          <StaticResource x:Key="ToggleSwitchKnobFillOff" ResourceKey="TextPrimaryBrush" />
         </ResourceDictionary>
       </ResourceDictionary.ThemeDictionaries>
 
