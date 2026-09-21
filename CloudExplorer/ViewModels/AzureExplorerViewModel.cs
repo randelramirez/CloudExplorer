@@ -101,7 +101,7 @@ public sealed partial class AzureExplorerViewModel : ProviderExplorerViewModel
         {
             var subscriptions = await _service.GetSubscriptionsAsync();
             ReplaceItems(Accounts, subscriptions);
-            SelectedAccount = Accounts.FirstOrDefault(static account => account.IsDefault) ?? Accounts.FirstOrDefault();
+            SelectedAccount = GetPreferredAccount(Accounts);
             IsAuthenticated = SelectedAccount is not null;
             if (SelectedAccount is null)
             {
