@@ -2,18 +2,18 @@
 
 ## Publishing
 
-Publish on Windows 10/11 using PowerShell and the .NET 10 SDK. Uno's self-contained Windows publishing currently needs to match the host architecture, which the script enforces.
+Publish on Windows 10/11 using [PowerShell 7 or later](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows) (`pwsh`) and the .NET 10 SDK. Windows PowerShell is not supported. Uno's self-contained Windows publishing currently needs to match the host architecture, which the script enforces.
 
 For Windows x64:
 
 ```powershell
-.\scripts\publish-windows.ps1 -Architecture x64
+pwsh -File .\scripts\publish-windows.ps1 -Architecture x64
 ```
 
 For Windows ARM64, run on an ARM64 Windows host:
 
 ```powershell
-.\scripts\publish-windows.ps1 -Architecture arm64
+pwsh -File .\scripts\publish-windows.ps1 -Architecture arm64
 ```
 
 The script writes a self-contained ZIP and SHA-256 file under the repository's root-level `installer\windows\` directory:
@@ -30,7 +30,7 @@ It selects CoreCLR for the Uno Skia desktop target, disables trimming, removes d
 Install the Windows SDK so `signtool.exe` is available, import an appropriate code-signing certificate into the Windows certificate store, then publish with its thumbprint:
 
 ```powershell
-.\scripts\publish-windows.ps1 `
+pwsh -File .\scripts\publish-windows.ps1 `
   -Architecture x64 `
   -CertificateThumbprint "YOUR_CERTIFICATE_THUMBPRINT"
 ```
