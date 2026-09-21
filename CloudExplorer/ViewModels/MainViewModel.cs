@@ -1,10 +1,16 @@
 namespace CloudExplorer.ViewModels;
 
+public enum ProviderViewMode
+{
+    Both,
+    Aws,
+    Azure,
+}
+
 public sealed partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(FullScreenButtonText))]
-    private bool _isFullScreenComparison;
+    private ProviderViewMode _selectedProviderViewMode = ProviderViewMode.Both;
 
     [ObservableProperty]
     private bool _isDarkMode;
@@ -19,5 +25,14 @@ public sealed partial class MainViewModel : ObservableObject
 
     public AzureExplorerViewModel Azure { get; }
 
-    public string FullScreenButtonText => IsFullScreenComparison ? "Exit full screen" : "Full screen compare";
+    public Task InitializeVisibleProvidersAsync() => SelectedProviderViewMode switch
+    {
+        ProviderViewMode.Both => Task.WhenAll(Aws.InitializeAsync(), Azure.InitializeAsync()),
+        ProviderViewMode.Aws => Aws.InitializeAsync(),
+        ProviderViewMode.Azure => Azure.InitializeAsync(),
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(SelectedProviderViewMode),
+            SelectedProviderViewMode,
+            "Unknown provider view mode."),
+    };
 }
