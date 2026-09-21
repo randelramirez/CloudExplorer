@@ -36,13 +36,9 @@
           BorderBrush="{ThemeResource BorderBrush}"
           BorderThickness="1"
           CornerRadius="8">
-        <Grid ColumnSpacing="14" RowSpacing="8">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="1.15*" />
-            <ColumnDefinition Width="1.35*" />
-          </Grid.ColumnDefinitions>
+        <Grid RowSpacing="8">
           <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
           </Grid.RowDefinitions>
@@ -61,25 +57,25 @@
                 Foreground="{ThemeResource TextSecondaryBrush}" />
           </StackPanel>
 
-          <StackPanel Grid.Column="1" Spacing="3">
-            <TextBlock Text="GROUP / LOCATION" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}" />
-            <TextBlock
-                Text="{Binding Resource.GroupName}"
-                TextTrimming="CharacterEllipsis"
-                Foreground="{ThemeResource TextPrimaryBrush}" />
-            <TextBlock
-                Text="{Binding Resource.Location}"
-                TextTrimming="CharacterEllipsis"
-                FontSize="12"
-                Foreground="{ThemeResource TextSecondaryBrush}" />
-          </StackPanel>
-
-          <Grid Grid.Column="2" ColumnSpacing="10">
+          <Grid Grid.Row="1" ColumnSpacing="16">
             <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1.4*" />
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackPanel Spacing="3">
+              <TextBlock Text="GROUP / LOCATION" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}" />
+              <TextBlock
+                  Text="{Binding Resource.GroupName}"
+                  TextTrimming="CharacterEllipsis"
+                  Foreground="{ThemeResource TextPrimaryBrush}" />
+              <TextBlock
+                  Text="{Binding Resource.Location}"
+                  TextTrimming="CharacterEllipsis"
+                  FontSize="12"
+                  Foreground="{ThemeResource TextSecondaryBrush}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Spacing="3">
               <TextBlock Text="CREATED" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}" />
               <TextBlock
                   Text="{Binding Resource.CreatedDisplay}"
@@ -87,7 +83,7 @@
                   Foreground="{ThemeResource TextPrimaryBrush}"
                   ToolTipService.ToolTip="{Binding Resource.CreatedAtSource}" />
             </StackPanel>
-            <StackPanel Grid.Column="1" Spacing="3">
+            <StackPanel Grid.Column="2" Spacing="3">
               <TextBlock Text="LAST MODIFIED" FontSize="10" Foreground="{ThemeResource TextSecondaryBrush}" />
               <TextBlock
                   Text="{Binding Resource.LastModifiedDisplay}"
@@ -98,8 +94,7 @@
           </Grid>
 
           <TextBlock
-              Grid.Row="1"
-              Grid.ColumnSpan="3"
+              Grid.Row="2"
               Text="{Binding Resource.TagsDisplay}"
               TextTrimming="CharacterEllipsis"
               FontSize="12"
@@ -180,15 +175,20 @@
       </Grid>
     </Border>
 
-    <Grid Grid.Row="1" Margin="12,6" ColumnSpacing="8">
+    <Grid x:Name="ControlsGrid" Grid.Row="1" Margin="12,6" ColumnSpacing="8" RowSpacing="8">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="1.4*" />
-        <ColumnDefinition Width="1.2*" />
-        <ColumnDefinition Width="1.4*" />
-        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition x:Name="ControlsColumnOne" Width="1.4*" />
+        <ColumnDefinition x:Name="ControlsColumnTwo" Width="1.2*" />
+        <ColumnDefinition x:Name="ControlsColumnThree" Width="1.4*" />
+        <ColumnDefinition x:Name="ControlsColumnFour" Width="Auto" />
       </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
 
       <ComboBox
+          x:Name="AccountSelector"
           Header="Account / subscription"
           ItemsSource="{Binding Accounts}"
           SelectedItem="{Binding SelectedAccount, Mode=OneWay}"
@@ -197,17 +197,20 @@
           IsEnabled="{Binding IsNotBusy}"
           HorizontalAlignment="Stretch" />
       <ComboBox
+          x:Name="GroupingSelector"
           Grid.Column="1"
           Header="Group by"
           ItemsSource="{Binding GroupingOptions}"
           SelectedItem="{Binding SelectedGrouping, Mode=TwoWay}"
           HorizontalAlignment="Stretch" />
       <TextBox
+          x:Name="FilterBox"
           Grid.Column="2"
           Header="Filter cached results"
           Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
           PlaceholderText="Name, type, tag…" />
       <Button
+          x:Name="RefreshButton"
           Grid.Column="3"
           Margin="0,22,0,0"
           Padding="18,8"
@@ -272,7 +275,7 @@
           ItemTemplateSelector="{StaticResource ResourceRowSelector}"
           SelectionMode="None"
           IsItemClickEnabled="False"
-          Background="Transparent"
+          Background="{ThemeResource PageBackgroundBrush}"
           BorderThickness="0"
           HorizontalContentAlignment="Stretch"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
