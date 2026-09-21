@@ -1,5 +1,9 @@
+using System;
+using System.Linq;
 using CloudExplorer.Models;
 using CloudExplorer.Services;
+using FluentAssertions;
+using NUnit.Framework;
 
 namespace CloudExplorer.Tests;
 
