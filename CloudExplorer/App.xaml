@@ -19,7 +19,6 @@
           <SolidColorBrush x:Key="AzureAccentBrush" Color="#0067B8" />
           <SolidColorBrush x:Key="AzureTintBrush" Color="#E8F3FC" />
           <SolidColorBrush x:Key="AzureOnAccentBrush" Color="#FFFFFF" />
-          <SolidColorBrush x:Key="SuccessBrush" Color="#0F7B45" />
           <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF7D6" />
           <SolidColorBrush x:Key="WarningBorderBrush" Color="#C89400" />
           <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#FFF0F0" />
@@ -39,7 +38,6 @@
           <SolidColorBrush x:Key="AzureAccentBrush" Color="#65B7F3" />
           <SolidColorBrush x:Key="AzureTintBrush" Color="#142E43" />
           <SolidColorBrush x:Key="AzureOnAccentBrush" Color="#071724" />
-          <SolidColorBrush x:Key="SuccessBrush" Color="#65D69A" />
           <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#3A3114" />
           <SolidColorBrush x:Key="WarningBorderBrush" Color="#F2C744" />
           <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#3B1D20" />
@@ -59,7 +57,6 @@
           <SolidColorBrush x:Key="AzureAccentBrush" Color="#0067B8" />
           <SolidColorBrush x:Key="AzureTintBrush" Color="#E8F3FC" />
           <SolidColorBrush x:Key="AzureOnAccentBrush" Color="#FFFFFF" />
-          <SolidColorBrush x:Key="SuccessBrush" Color="#0F7B45" />
           <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#FFF7D6" />
           <SolidColorBrush x:Key="WarningBorderBrush" Color="#C89400" />
           <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#FFF0F0" />
