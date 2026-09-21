@@ -1,42 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="456"
-   height="456"
-   viewBox="0 0 456 456"
-   version="1.1"
-   id="svg453"
-   sodipodi:docname="icon.svg"
-   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs457" />
-  <sodipodi:namedview
-     id="namedview455"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="false"
-     inkscape:zoom="1.8574561"
-     inkscape:cx="228.26919"
-     inkscape:cy="228.26919"
-     inkscape:window-width="1920"
-     inkscape:window-height="1027"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg453" />
-  <rect
-     x="0"
-     y="0"
-     width="456"
-     height="456"
-     fill="#FFFFFF"
-     id="rect451" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="512"
+     height="512"
+     viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="background" x1="82" y1="54" x2="430" y2="458" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0757B8" />
+      <stop offset="0.58" stop-color="#087DCE" />
+      <stop offset="1" stop-color="#08A6C8" />
+    </linearGradient>
+    <linearGradient id="highlight" x1="124" y1="84" x2="388" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.18" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Transparent corners keep the intended silhouette in the generated
+       Windows ICO, macOS ICNS, and Linux launcher images. -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#background)" />
+  <path d="M72 188C115 103 191 55 284 55C374 55 447 107 478 189C419 148 349 126 274 126C198 126 129 148 72 188Z"
+        fill="url(#highlight)" />
 </svg>
