@@ -3,33 +3,9 @@
     x:Name="RootPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:CloudExplorer.Converters"
     xmlns:views="using:CloudExplorer.Views"
     Loaded="PageLoaded"
     Background="{ThemeResource PageBackgroundBrush}">
-
-  <Page.Resources>
-    <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility" />
-    <converters:BooleanToVisibilityConverter x:Key="InverseBoolToVisibility" Invert="True" />
-
-    <DataTemplate x:Key="AwsPaneTemplate">
-      <views:ProviderPane
-          ProviderName="Amazon Web Services"
-          ProviderInitial="A"
-          AccentBrush="{ThemeResource AwsAccentBrush}"
-          TintBrush="{ThemeResource AwsTintBrush}"
-          AccentForegroundBrush="{ThemeResource AwsOnAccentBrush}" />
-    </DataTemplate>
-
-    <DataTemplate x:Key="AzurePaneTemplate">
-      <views:ProviderPane
-          ProviderName="Microsoft Azure"
-          ProviderInitial="Az"
-          AccentBrush="{ThemeResource AzureAccentBrush}"
-          TintBrush="{ThemeResource AzureTintBrush}"
-          AccentForegroundBrush="{ThemeResource AzureOnAccentBrush}" />
-    </DataTemplate>
-  </Page.Resources>
 
   <Grid>
     <Grid.RowDefinitions>
@@ -42,13 +18,16 @@
         Background="{ThemeResource ShellBackgroundBrush}"
         BorderBrush="{ThemeResource BorderBrush}"
         BorderThickness="0,0,0,1">
-      <Grid ColumnSpacing="12">
+      <Grid ColumnSpacing="12" RowSpacing="8">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
         <Border
             Width="40"
@@ -81,40 +60,72 @@
             IsOn="{Binding IsDarkMode, Mode=TwoWay}"
             Toggled="ThemeToggled" />
 
-        <Button
-            Grid.Column="3"
-            Padding="14,8"
-            Click="FullScreenComparisonClicked"
-            Content="{Binding FullScreenButtonText}" />
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Orientation="Horizontal"
+            Spacing="12"
+            AutomationProperties.Name="Provider view">
+          <TextBlock
+              Text="Provider view"
+              VerticalAlignment="Center"
+              FontWeight="SemiBold"
+              Foreground="{ThemeResource TextPrimaryBrush}" />
+          <RadioButton
+              x:Name="BothViewOption"
+              Content="Both"
+              GroupName="ProviderViewMode"
+              IsChecked="True"
+              Checked="ProviderViewOptionChecked"
+              Tag="Both"
+              AutomationProperties.HelpText="Show AWS and Azure side by side" />
+          <RadioButton
+              x:Name="AwsViewOption"
+              Content="AWS"
+              GroupName="ProviderViewMode"
+              Checked="ProviderViewOptionChecked"
+              Tag="Aws"
+              AutomationProperties.HelpText="Show only AWS" />
+          <RadioButton
+              x:Name="AzureViewOption"
+              Content="Azure"
+              GroupName="ProviderViewMode"
+              Checked="ProviderViewOptionChecked"
+              Tag="Azure"
+              AutomationProperties.HelpText="Show only Azure" />
+        </StackPanel>
       </Grid>
     </Border>
 
-    <TabView
-        x:Name="ProviderTabs"
-        Grid.Row="1"
-        SelectedIndex="0"
-        IsAddTabButtonVisible="False"
-        SelectionChanged="ProviderTabSelectionChanged"
-        Visibility="{Binding IsFullScreenComparison, Converter={StaticResource InverseBoolToVisibility}}">
-      <TabViewItem Header="AWS">
-        <ContentControl Content="{Binding Aws}" ContentTemplate="{StaticResource AwsPaneTemplate}" />
-      </TabViewItem>
-      <TabViewItem Header="Azure">
-        <ContentControl Content="{Binding Azure}" ContentTemplate="{StaticResource AzurePaneTemplate}" />
-      </TabViewItem>
-    </TabView>
-
     <Grid
+        x:Name="ProviderWorkspace"
         Grid.Row="1"
         ColumnSpacing="1"
-        Background="{ThemeResource BorderBrush}"
-        Visibility="{Binding IsFullScreenComparison, Converter={StaticResource BoolToVisibility}}">
+        Background="{ThemeResource BorderBrush}">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
-      <ContentControl Content="{Binding Aws}" ContentTemplate="{StaticResource AwsPaneTemplate}" />
-      <ContentControl Grid.Column="1" Content="{Binding Azure}" ContentTemplate="{StaticResource AzurePaneTemplate}" />
+
+      <views:ProviderPane
+          x:Name="AwsProviderPane"
+          Grid.Column="0"
+          DataContext="{Binding Aws}"
+          ProviderName="Amazon Web Services"
+          ProviderInitial="A"
+          AccentBrush="{ThemeResource AwsAccentBrush}"
+          TintBrush="{ThemeResource AwsTintBrush}"
+          AccentForegroundBrush="{ThemeResource AwsOnAccentBrush}" />
+      <views:ProviderPane
+          x:Name="AzureProviderPane"
+          Grid.Column="1"
+          DataContext="{Binding Azure}"
+          ProviderName="Microsoft Azure"
+          ProviderInitial="Az"
+          AccentBrush="{ThemeResource AzureAccentBrush}"
+          TintBrush="{ThemeResource AzureTintBrush}"
+          AccentForegroundBrush="{ThemeResource AzureOnAccentBrush}" />
     </Grid>
   </Grid>
 </Page>
