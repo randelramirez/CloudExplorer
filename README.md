@@ -65,8 +65,8 @@ Platform publishing starts with:
 # Ubuntu or macOS: dispatch to the current host
 ./scripts/publish.sh
 
-# Windows PowerShell
-.\scripts\publish-windows.ps1
+# PowerShell 7+
+pwsh -File .\scripts\publish-windows.ps1
 ```
 
 Complete publisher prerequisites and end-user installation steps are separated by operating system in the [publishing index](docs/PUBLISHING.md): [Ubuntu](docs/platforms/UBUNTU.md), [Windows](docs/platforms/WINDOWS.md), and [macOS](docs/platforms/MACOS.md).
