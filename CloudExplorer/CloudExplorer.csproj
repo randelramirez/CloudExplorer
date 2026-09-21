@@ -6,7 +6,7 @@
     <UnoSingleProject>true</UnoSingleProject>
 
     <!-- Display name -->
-    <ApplicationTitle>CloudExplorer</ApplicationTitle>
+    <ApplicationTitle>Cloud Explorer</ApplicationTitle>
     <!-- App Identifier -->
     <ApplicationId>com.companyname.cloudexplorer</ApplicationId>
     <!-- Versions -->
