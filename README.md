@@ -7,18 +7,20 @@ Cloud Explorer is a cross-platform Uno Platform desktop application for browsing
 
 ## Current capabilities
 
-- AWS is the default tab.
+- Best-effort startup maximization within the desktop work area, preserving the Windows taskbar, macOS menu bar and Dock, and Linux panels and docks; unsupported hosts are handled non-fatally.
+- AWS and Azure appear side by side in the default **Both** view.
+- Explicit **Both**, **AWS**, and **Azure** view choices preserve each provider's state; a single-provider view fills the provider workspace.
 - AWS CLI profile discovery and profile selection.
 - AWS CLI authentication through `aws sso login` or `aws login`.
 - AWS Resource Explorer inventory grouped by resource type or tag.
 - Azure CLI authentication through `az login`.
 - Azure subscription discovery and selection.
 - Azure resources grouped by resource group or resource type.
-- Independent, explicit refresh buttons with no background polling.
+- Independent, explicit provider refresh buttons with no background polling or cross-provider refresh.
 - Local filtering that never makes a cloud request.
 - Created and modified timestamps when the provider exposes them, otherwise `Not exposed`.
 - Light and dark themes whose colors are entirely theme-resource based.
-- A full-screen 50/50 AWS/Azure comparison mode.
+- Equal-width AWS/Azure panes in the Both view.
 - Virtualized result rendering and guarded non-overlapping operations.
 
 ## Prerequisites
@@ -49,7 +51,7 @@ dotnet test CloudExplorer.slnx
 
 ## Refresh behavior
 
-Each provider loads once when its view is first opened. After that, resource data is cached until the user presses that provider's **Refresh** button. Changing the selected profile or subscription is also an explicit user action and loads that newly selected scope. There are no timers, schedulers, or recurring cloud calls.
+The default Both view initializes AWS and Azure independently, once each. After that, each provider's resource data remains cached until the user presses that provider's **Refresh** button. Switching among Both, AWS, and Azure preserves both caches and does not request fresh cloud data. Changing the selected profile or subscription is also an explicit user action and loads only that newly selected scope. There are no timers, schedulers, recurring cloud calls, or coupled AWS/Azure refreshes.
 
 ## Timestamp semantics
 
