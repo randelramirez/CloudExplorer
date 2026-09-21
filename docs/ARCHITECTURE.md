@@ -22,13 +22,15 @@ The UI knows only view models. Provider view models own cached resources, authen
 
 ## Data flow
 
-1. The first visible provider initializes once.
-2. Its view model discovers local account choices and validates the CLI session.
-3. If authenticated, it performs one resource request and caches the normalized records.
-4. Search and group changes rebuild virtualized rows from the cache.
-5. No cloud call occurs again until the user refreshes or explicitly changes account scope.
+1. `MainViewModel.SelectedProviderViewMode` starts as `ProviderViewMode.Both`; the other explicit values are `Aws` and `Azure`.
+2. Each visible provider initializes at most once. The default Both view therefore initializes AWS and Azure independently.
+3. Each provider view model discovers its local account choices and validates its own CLI session.
+4. If authenticated, that provider performs one resource request and caches the normalized records.
+5. Search and group changes rebuild virtualized rows from the provider's cache.
+6. Changing provider view mode only changes presentation and preserves both provider view-model instances and their state.
+7. No provider makes another cloud call until the user refreshes it or explicitly changes its account scope.
 
-AWS and Azure use separate singleton view models, commands, busy states, caches, and timestamps. Consequently, comparison-mode refreshes remain independent.
+AWS and Azure use separate singleton view models, commands, busy states, caches, and timestamps. A refresh in the Both view targets only the provider whose refresh command the user invoked.
 
 ## Provider strategy
 
@@ -49,4 +51,6 @@ Browser/device interaction is owned by the CLI process. Output containing tokens
 
 `ProviderPane` is a reusable view rendered from provider-specific data templates. A flat row sequence and `DataTemplateSelector` allow one virtualized `ListView` to display group headings and resources. Theme dictionaries define every authored color separately for light and dark mode.
 
-The normal shell uses a `TabView` with AWS at index zero. Full-screen comparison replaces the tabs with a two-star-column grid and requests the desktop host's native full-screen presenter.
+The shell offers explicit Both, AWS, and Azure provider-view choices. Both is the default and presents the two existing provider panes in equal-width columns. A single-provider choice gives that pane the full provider workspace. The shell reuses the same AWS and Azure view-model instances across modes, so view selection neither resets provider state nor couples refresh behavior.
+
+On the main window's first `Activated` event, `App` detaches its one-time handler and makes a best-effort `OverlappedPresenter.Maximize()` request. Waiting for native activation lets the Linux window manager honor the request without adding a timer. Maximization asks each desktop host to fill its available work area while preserving operating-system UI such as taskbars, menu bars, panels, and docks. A missing overlapped presenter or rejected maximize request is logged as a warning and does not prevent startup. There is no application full-screen control or full-screen state in the view model; provider-view mode is independent of native window state.
