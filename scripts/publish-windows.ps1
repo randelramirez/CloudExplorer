@@ -1,3 +1,6 @@
+#requires -Version 7.0
+#requires -PSEdition Core
+
 [CmdletBinding()]
 param(
     [ValidateSet("x64", "arm64")]
@@ -13,6 +16,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent $scriptDirectory
 $projectFile = Join-Path $projectRoot "CloudExplorer\CloudExplorer.csproj"
@@ -20,8 +24,7 @@ $artifactsDirectory = Join-Path $projectRoot "artifacts"
 $packagesDirectory = Join-Path (Join-Path $projectRoot "installer") "windows"
 $stagingDirectory = Join-Path $artifactsDirectory (".publish-windows." + [guid]::NewGuid().ToString("N"))
 
-if (-not [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform(
-        [System.Runtime.InteropServices.OSPlatform]::Windows)) {
+if (-not $IsWindows) {
     throw "The Windows release package must be published on Windows."
 }
 
