@@ -1,3 +1,7 @@
+using CloudExplorer.Models;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+
 namespace CloudExplorer.Converters;
 
 public sealed class ResourceRowTemplateSelector : DataTemplateSelector
