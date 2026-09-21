@@ -8,10 +8,15 @@
 
 ## Application shell
 
-- Show AWS and Azure as separate tabs.
-- Select AWS by default.
+- When the main desktop window first activates, automatically maximize it within the host's available desktop work area.
+- Keep the window in the native overlapped/windowed presenter so operating-system UI such as the Windows taskbar, macOS menu bar and Dock, and Linux panels and docks remains available.
+- Treat a rejected or unsupported maximize request as a logged, non-fatal condition; do not provide an application full-screen toggle.
+- Launch in the **Both** provider view, with AWS and Azure visible side by side in equal-width columns.
+- Provide explicit **Both**, **AWS**, and **Azure** view choices.
+- Fill the provider workspace with the selected provider in AWS-only or Azure-only view.
+- Preserve each provider's account selection, filters, grouping, cached resources, status, and refresh state when the view choice changes.
+- Treat provider view selection as presentation state only; changing it must not refresh cloud data.
 - Provide a light/dark mode toggle.
-- Provide full-screen comparison mode with exactly equal AWS and Azure columns.
 - All text, foreground, background, surface, border, status, and accent colors must adapt to the selected theme.
 
 ## AWS
@@ -43,6 +48,7 @@
 
 - No polling, recurring timer, scheduled refresh, or automatic retry loop.
 - Ignore overlapping refresh requests while one is active.
+- Keep AWS and Azure initialization, caches, busy states, timestamps, and refresh commands independent in every provider view.
 - Run CLI processes asynchronously, read stdout/stderr concurrently, enforce timeouts, and terminate child process trees on cancellation/timeout.
 - Pass arguments through `ProcessStartInfo.ArgumentList`; never construct a shell command from user-controlled values.
 - Virtualize the resource list.
