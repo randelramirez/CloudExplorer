@@ -4,6 +4,7 @@ set -Eeuo pipefail
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd -- "${script_dir}/.." && pwd)"
 project_file="${project_root}/CloudExplorer/CloudExplorer.csproj"
+desktop_installer="${project_root}/packaging/linux/install-desktop-entry.sh"
 artifacts_dir="${project_root}/artifacts"
 packages_dir="${project_root}/installer/ubuntu"
 
@@ -74,8 +75,15 @@ if [[ -z "${version}" ]]; then
   version="$(dotnet msbuild "${project_file}" -nologo -getProperty:ApplicationDisplayVersion | tail -n 1 | tr -d '\r')"
 fi
 
+application_id="$(dotnet msbuild "${project_file}" -nologo -getProperty:ApplicationId | tail -n 1 | tr -d '\r')"
+
 if [[ ! "${version}" =~ ^[0-9A-Za-z][0-9A-Za-z.+-]*$ ]]; then
   printf 'Invalid application version: %s\n' "${version}" >&2
+  exit 2
+fi
+
+if [[ ! "${application_id}" =~ ^[[:alnum:]][[:alnum:]._-]*$ ]]; then
+  printf 'Invalid application ID: %s\n' "${application_id}" >&2
   exit 2
 fi
 
@@ -101,6 +109,11 @@ if [[ "${package_format}" == "portable" ]]; then
     --output "${bundle_dir}"
 
   test -x "${bundle_dir}/CloudExplorer"
+  launcher_icon="${bundle_dir}/Assets/Icons/iconLogo.targetsize-256.png"
+  test -s "${launcher_icon}"
+  install -m 0644 "${launcher_icon}" "${bundle_dir}/cloud-explorer.png"
+  install -m 0755 "${desktop_installer}" "${bundle_dir}/install-desktop-entry.sh"
+  printf '%s\n' "${application_id}" >"${bundle_dir}/cloud-explorer.application-id"
   find "${bundle_dir}" -type f -name '*.pdb' -delete
   tar -C "${staging_dir}" -czf "${archive_path}" CloudExplorer
 else
