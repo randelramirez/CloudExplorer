@@ -102,6 +102,9 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
         }
     }
 
+    protected static CloudAccountOption? GetPreferredAccount(IEnumerable<CloudAccountOption> accounts) =>
+        accounts.FirstOrDefault(static account => account.IsDefault) ?? accounts.FirstOrDefault();
+
     protected async Task RunExclusiveAsync(Func<Task> action)
     {
         if (IsBusy)
@@ -132,15 +135,24 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
 
     private void RebuildRows()
     {
+        var visibleResources = FilterResources();
+        VisibleResourceCount = visibleResources.Count;
+        Rows = BuildRows(visibleResources);
+    }
+
+    private IReadOnlyList<CloudResource> FilterResources()
+    {
         var searchText = SearchText.Trim();
-        var filtered = searchText.Length == 0
+        return searchText.Length == 0
             ? _resources
             : _resources
                 .Where(resource => resource.SearchableText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 .ToList();
-        VisibleResourceCount = filtered.Count;
+    }
 
-        var groups = filtered
+    private List<ResourceListRow> BuildRows(IEnumerable<CloudResource> resources)
+    {
+        var groups = resources
             .SelectMany(resource => GetGroupKeys(resource)
                 .Where(static key => !string.IsNullOrWhiteSpace(key))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -162,6 +174,6 @@ public abstract partial class ProviderExplorerViewModel : ObservableObject
             }
         }
 
-        Rows = rows;
+        return rows;
     }
 }
