@@ -1,3 +1,7 @@
+using CloudExplorer.Models;
+using FluentAssertions;
+using NUnit.Framework;
+
 namespace CloudExplorer.Tests;
 
 public class AppInfoTests
