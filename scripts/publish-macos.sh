@@ -106,7 +106,7 @@ if [[ "${package_format}" == "pkg" && -z "${package_signing_key}" ]]; then
   exit 2
 fi
 
-for required_command in dotnet ditto shasum; do
+for required_command in dotnet ditto plutil shasum; do
   if ! command -v "${required_command}" >/dev/null 2>&1; then
     printf 'Required command is missing: %s\n' "${required_command}" >&2
     exit 127
@@ -161,18 +161,29 @@ fi
 dotnet "${publish_arguments[@]}"
 
 package_base="cloud-explorer-${version}-${runtime_identifier}"
-if [[ "${package_format}" == "app" ]]; then
-  app_bundle=""
-  app_bundle_count=0
-  while IFS= read -r candidate; do
-    app_bundle="${candidate}"
-    app_bundle_count=$((app_bundle_count + 1))
-  done < <(find "${publish_dir}" -maxdepth 1 -type d -name '*.app' -print)
-  if [[ ${app_bundle_count} -ne 1 ]]; then
-    printf 'Expected one app bundle, found %s.\n' "${app_bundle_count}" >&2
-    exit 1
-  fi
+app_bundle=""
+app_bundle_count=0
+while IFS= read -r candidate; do
+  app_bundle="${candidate}"
+  app_bundle_count=$((app_bundle_count + 1))
+done < <(find "${publish_dir}" -maxdepth 1 -type d -name '*.app' -print)
+if [[ ${app_bundle_count} -ne 1 ]]; then
+  printf 'Expected one app bundle, found %s.\n' "${app_bundle_count}" >&2
+  exit 1
+fi
 
+bundle_icon="${app_bundle}/Contents/Resources/icon.icns"
+info_plist="${app_bundle}/Contents/Info.plist"
+if [[ ! -s "${bundle_icon}" ]]; then
+  printf 'The published app icon was not found: %s\n' "${bundle_icon}" >&2
+  exit 1
+fi
+if [[ "$(plutil -extract CFBundleIconFile raw -o - "${info_plist}")" != "icon.icns" ]]; then
+  printf '%s\n' 'The app bundle does not reference its generated icon.icns.' >&2
+  exit 1
+fi
+
+if [[ "${package_format}" == "app" ]]; then
   if [[ -n "${codesign_key}" ]]; then
     codesign --verify --deep --strict "${app_bundle}"
   fi
