@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace CloudExplorer.Models;
 
@@ -35,21 +38,20 @@ public sealed partial record CloudResource
 
     public string LastModifiedDisplay => FormatDate(LastModifiedAt);
 
-    public string LastObservedDisplay => FormatDate(LastObservedAt);
-
     public string TagsDisplay => Tags.Count == 0
         ? "No tags"
         : string.Join("  •  ", Tags.OrderBy(static tag => tag.Key, StringComparer.OrdinalIgnoreCase)
             .Select(static tag => $"{tag.Key}={tag.Value}"));
 
-    public string SearchableText => string.Join(
+    internal string SearchableTextPrefix => string.Join(
         ' ',
         Name,
         ResourceType,
         GroupName,
         Location,
-        AccountId,
-        TagsDisplay);
+        AccountId);
+
+    public string SearchableText => string.Concat(SearchableTextPrefix, " ", TagsDisplay);
 
     private static string FormatDate(DateTimeOffset? value) => value is null
         ? "Not exposed"
