@@ -123,6 +123,7 @@ if [[ ! "${version}" =~ ^[0-9A-Za-z][0-9A-Za-z.+-]*$ ]]; then
 fi
 
 mkdir -p "${packages_dir}"
+mkdir -p "${artifacts_dir}"
 staging_dir="$(mktemp -d "${artifacts_dir}/.publish-macos.XXXXXX")"
 trap cleanup EXIT
 
