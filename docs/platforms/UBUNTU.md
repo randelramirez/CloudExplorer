@@ -21,7 +21,7 @@ cloud-explorer-<version>-linux-<arch>.tar.gz
 cloud-explorer-<version>-linux-<arch>.tar.gz.sha256
 ```
 
-It disables trimming, removes debug symbols from the staged release, verifies that the executable exists, and archives a `CloudExplorer/` directory. The archive includes the .NET runtime; AWS CLI and Azure CLI remain separate prerequisites.
+It disables trimming, removes debug symbols from the staged release, verifies that the executable and generated launcher icon exist, and archives a `CloudExplorer/` directory. The archive includes the .NET runtime, the application icon, and a user-level desktop-integration helper; AWS CLI and Azure CLI remain separate prerequisites.
 
 ### Native Snap package
 
@@ -49,8 +49,11 @@ Install for the current user:
 mkdir -p "$HOME/.local/opt" "$HOME/.local/bin"
 tar -xzf cloud-explorer-<version>-linux-x64.tar.gz -C "$HOME/.local/opt"
 ln -sfn "$HOME/.local/opt/CloudExplorer/CloudExplorer" "$HOME/.local/bin/cloud-explorer"
+"$HOME/.local/opt/CloudExplorer/install-desktop-entry.sh"
 "$HOME/.local/bin/cloud-explorer"
 ```
+
+The desktop-integration helper installs the generated Cloud Explorer icon and a matching `.desktop` entry under the current user's XDG data directory. This makes the published portable app discoverable in the Ubuntu Dash and lets the running window group under the correct launcher icon. Keep the extracted `CloudExplorer/` directory at the same location after running the helper; rerun it if the directory is moved.
 
 If upgrading an existing installation, rename or remove the existing `$HOME/.local/opt/CloudExplorer` directory before extracting so obsolete files cannot remain alongside the new release.
 
@@ -84,6 +87,7 @@ Portable installation:
 
 ```bash
 rm "$HOME/.local/bin/cloud-explorer"
+"$HOME/.local/opt/CloudExplorer/install-desktop-entry.sh" --uninstall
 rm -rf "$HOME/.local/opt/CloudExplorer"
 ```
 
