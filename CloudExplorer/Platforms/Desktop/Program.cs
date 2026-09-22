@@ -1,14 +1,14 @@
 using System;
+using CloudExplorer;
 using Uno.UI.Hosting;
 
-namespace CloudExplorer;
+namespace CloudExplorer.Platforms.Desktop;
 
-internal class Program
+internal static class Program
 {
     [STAThread]
-    public static void Main(string[] args)
+    public static void Main()
     {
-
         var host = UnoPlatformHostBuilder.Create()
             .App(() => new App())
             .UseX11()
