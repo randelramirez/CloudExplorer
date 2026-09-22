@@ -24,7 +24,7 @@ cloud-explorer-<version>-osx-<arch>.zip
 cloud-explorer-<version>-osx-<arch>.zip.sha256
 ```
 
-Uno's macOS publisher always makes app bundles self-contained. The script uses Uno's native `PackageFormat=app` pipeline and `ditto` so resource forks and bundle metadata survive ZIP creation.
+Uno's macOS publisher always makes app bundles self-contained. The script uses Uno's native `PackageFormat=app` pipeline, verifies that the generated `icon.icns` is referenced by `Info.plist`, and uses `ditto` so the icon, resource forks, and bundle metadata survive ZIP creation.
 
 ### Signed and notarized distribution
 
