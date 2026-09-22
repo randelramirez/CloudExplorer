@@ -23,7 +23,7 @@ cloud-explorer-<version>-win-<arch>.zip
 cloud-explorer-<version>-win-<arch>.zip.sha256
 ```
 
-It selects CoreCLR for the Uno Skia desktop target, disables trimming, removes debug symbols, verifies `CloudExplorer.exe`, and packages a `CloudExplorer\` directory. End users do not need a separate .NET installation.
+It selects CoreCLR for the Uno Skia desktop target, disables trimming, removes debug symbols, verifies `CloudExplorer.exe` and its generated icon, and packages a `CloudExplorer\` directory. The icon is embedded in the executable for the taskbar and Start Menu shortcut. End users do not need a separate .NET installation.
 
 ### Authenticode signing
 

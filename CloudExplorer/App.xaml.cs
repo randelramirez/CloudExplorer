@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using CloudExplorer.Models;
-using CloudExplorer.Services;
-using CloudExplorer.ViewModels;
+using CloudExplorer.Configuration;
+using CloudExplorer.Features.Aws;
+using CloudExplorer.Features.Azure;
+using CloudExplorer.Features.Shell;
+using CloudExplorer.Infrastructure.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
